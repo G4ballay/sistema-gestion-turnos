@@ -3,5 +3,8 @@ package com.gonzalo.turnos.repository;
 import com.gonzalo.turnos.entity.Especialidad;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface EspecialidadRepository extends JpaRepository<Especialidad, Long> {
+    Optional<Especialidad> findByNombreIgnoreCase(String nombre);
 }
