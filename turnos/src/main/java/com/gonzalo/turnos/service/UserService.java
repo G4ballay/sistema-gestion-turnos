@@ -5,6 +5,7 @@ import com.gonzalo.turnos.exeption.*;
 import com.gonzalo.turnos.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,30 @@ public class UserService implements IUserService {
             throw new EmailYaRegistradoException("El correo electrónico ya esta registrado");
         }
 
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+
         return userRepository.save(user);
+    }
+
+    @Override
+    public User modificarUsuario(User user) {
+
+        User usuarioExistente = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UsuarioNoExisteException("Usuario no encontrado"));
+
+        Optional<User> usuarioConEmail = userRepository.findByEmail(user.getEmail());
+
+        if(usuarioConEmail.isPresent() && !usuarioConEmail.get().getId().equals(user.getId())){
+            throw new EmailYaRegistradoException("El correo electrónico ya está registrado");
+        }
+
+        usuarioExistente.setNombre(user.getNombre());
+        usuarioExistente.setApellido(user.getApellido());
+        usuarioExistente.setEmail(user.getEmail());
+        usuarioExistente.setUpdatedAt(LocalDateTime.now());
+
+        return userRepository.save(usuarioExistente);
     }
 
     @Override
@@ -42,7 +66,17 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> buscarPorApellido(String apellido){
+        return userRepository.findByApellidoStartingWithIgnoreCase(apellido);
+    }
+
+    @Override
     public void eliminarUsuario(Long id) {
+
+        if(!userRepository.existsById(id)){
+            throw new UsuarioNoExisteException("Usuario no encontrado");
+        }
+
         userRepository.deleteById(id);
     }
 }
