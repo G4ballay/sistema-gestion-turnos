@@ -15,13 +15,7 @@ public class Turno {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate fecha;
-
-    @Column(nullable = false)
-    private LocalTime horaInicio;
-
-    @Column(nullable = false)
-    private LocalTime horaFin;
+    private LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -43,6 +37,7 @@ public class Turno {
 
     //Generar getters y setters
 
+
     public Long getId() {
         return id;
     }
@@ -51,28 +46,12 @@ public class Turno {
         this.id = id;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public LocalTime getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
-
-    public LocalTime getHoraFin() {
-        return horaFin;
-    }
-
-    public void setHoraFin(LocalTime horaFin) {
-        this.horaFin = horaFin;
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     public EstadoTurno getEstado() {

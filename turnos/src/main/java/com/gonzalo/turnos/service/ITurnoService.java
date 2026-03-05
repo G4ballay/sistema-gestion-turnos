@@ -20,7 +20,11 @@ public interface ITurnoService {
 
     List<Turno> buscarPorRangoFechas(LocalDateTime inicio, LocalDateTime fin);
 
-    Turno crearTurno(Turno turno);
+    Turno crearTurno(Long profesionalId, LocalDateTime fechaHora);
 
-    void cancelarTurno(Long id);
+    Turno asignarTurno(Long turnoId,Long pacienteId);
+
+    Turno cancelarTurno(Long turnoId, Long pacienteId);
+
+    void borrarTurno(Long id);
 }

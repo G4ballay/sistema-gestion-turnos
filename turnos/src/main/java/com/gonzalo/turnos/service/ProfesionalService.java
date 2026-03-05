@@ -2,10 +2,12 @@ package com.gonzalo.turnos.service;
 
 import com.gonzalo.turnos.entity.Profesional;
 import com.gonzalo.turnos.repository.ProfesionalRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProfesionalService implements IProfesionalService{
 
     private final ProfesionalRepository profesionalRepository;

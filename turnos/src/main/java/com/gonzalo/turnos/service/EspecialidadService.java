@@ -2,10 +2,12 @@ package com.gonzalo.turnos.service;
 
 import com.gonzalo.turnos.entity.Especialidad;
 import com.gonzalo.turnos.repository.EspecialidadRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EspecialidadService implements IEspecialidadService{
 
     private final EspecialidadRepository especialidadRepository;
