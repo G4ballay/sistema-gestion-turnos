@@ -63,7 +63,7 @@ public class TurnoService implements  ITurnoService{
         }
 
         Profesional profesional = profesionalRepository.findById(profesionalId)
-                .orElseThrow(() -> new ProfesionNoEncontradoException("Profesional no encontrado"));
+                .orElseThrow(() -> new ProfesionalNoEncontradoException("Profesional no encontrado"));
 
 
         if (turnoRepository.existsByProfesionalIdAndFechaHora(profesionalId, fechaHora)) {

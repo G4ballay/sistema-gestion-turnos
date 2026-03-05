@@ -1,6 +1,7 @@
 package com.gonzalo.turnos.service;
 
 import com.gonzalo.turnos.entity.Especialidad;
+import com.gonzalo.turnos.exeption.*;
 import com.gonzalo.turnos.repository.EspecialidadRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +34,21 @@ public class EspecialidadService implements IEspecialidadService{
 
     @Override
     public Especialidad crearEspecialidad(Especialidad especialidad) {
+        if(especialidad.getNombre() == null || especialidad.getNombre().isBlank()){
+            throw new NombreObligatorioException("El nombre de la especialidad es obligatorio");
+        }
+        if(especialidadRepository.findByNombreIgnoreCase(especialidad.getNombre()).isPresent()){
+            throw new EspecialidadDuplicadaException("La especialidad ya existe");
+        }
+
         return especialidadRepository.save(especialidad);
     }
 
     @Override
     public void eliminarEspecialidad(Long id) {
+        if (!especialidadRepository.existsById(id)) {
+            throw new EspecialidadNoEncontradaException("Especialidad no encontrada");
+        }
         especialidadRepository.deleteById(id);
     }
 }
