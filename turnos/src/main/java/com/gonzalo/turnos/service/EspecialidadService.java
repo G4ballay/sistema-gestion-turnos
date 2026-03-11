@@ -28,8 +28,8 @@ public class EspecialidadService implements IEspecialidadService{
     }
 
     @Override
-    public Optional<Especialidad> buscarPorNombre(String nombre) {
-        return especialidadRepository.findByNombreIgnoreCase(nombre);
+    public List<Especialidad> buscarPorNombre(String nombre) {
+        return especialidadRepository.findByNombreStartingWithIgnoreCase(nombre);
     }
 
     @Override

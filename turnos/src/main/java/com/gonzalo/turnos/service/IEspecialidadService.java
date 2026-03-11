@@ -11,7 +11,7 @@ public interface IEspecialidadService {
 
     Optional<Especialidad> buscarPorId(Long id);
 
-    Optional<Especialidad> buscarPorNombre(String nombre);
+    List<Especialidad> buscarPorNombre(String nombre);
 
     Especialidad crearEspecialidad(Especialidad especialidad);
 
