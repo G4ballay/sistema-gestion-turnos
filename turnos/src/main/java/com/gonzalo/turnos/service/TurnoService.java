@@ -5,6 +5,7 @@ import com.gonzalo.turnos.entity.Profesional;
 import com.gonzalo.turnos.entity.Turno;
 import com.gonzalo.turnos.entity.User;
 import com.gonzalo.turnos.exeption.*;
+import com.gonzalo.turnos.repository.EspecialidadRepository;
 import com.gonzalo.turnos.repository.ProfesionalRepository;
 import com.gonzalo.turnos.repository.TurnoRepository;
 import com.gonzalo.turnos.repository.UserRepository;
@@ -21,13 +22,16 @@ public class TurnoService implements  ITurnoService{
     private final TurnoRepository turnoRepository;
     private final ProfesionalRepository profesionalRepository;
     private final UserRepository userRepository;
+    private final EspecialidadRepository especialidadRepository;
 
     public TurnoService(TurnoRepository turnoRepository,
                             ProfesionalRepository profesionalRepository,
-                            UserRepository userRepository) {
+                            UserRepository userRepository,
+                            EspecialidadRepository especialidadRepository) {
         this.turnoRepository = turnoRepository;
         this.profesionalRepository = profesionalRepository;
         this.userRepository = userRepository;
+        this.especialidadRepository = especialidadRepository;
     }
 
     @Override
@@ -46,13 +50,53 @@ public class TurnoService implements  ITurnoService{
     }
 
     @Override
+    public List<Turno> turnosDisponiblesPorEspecialidadYFecha(Long especialidadId, LocalDate fecha) {
+        LocalDateTime inicio = fecha.atStartOfDay();
+        LocalDateTime fin = fecha.atTime(23,59);
+
+        return turnoRepository.findByProfesionalEspecialidadIdAndEstadoAndFechaHoraBetweenOrderByFechaHoraAsc(
+                especialidadId,
+                EstadoTurno.DISPONIBLE,
+                inicio,
+                fin
+        );
+    }
+
+    @Override
+    public List<Turno> turnosDisponiblesPorProfesional(Long profesionalId) {
+        return turnoRepository.findByProfesionalIdAndEstadoOrderByFechaHoraAsc(
+                profesionalId,
+                EstadoTurno.DISPONIBLE,
+                LocalDateTime.now()
+        );
+    }
+
+    @Override
     public List<Turno> buscarPorPaciente(Long pacienteId) {
-        return turnoRepository.findByPacienteId(pacienteId);
+        return turnoRepository.findByUsuarioId(pacienteId);
     }
 
     @Override
     public List<Turno> buscarPorRangoFechas(LocalDateTime inicio, LocalDateTime fin) {
         return turnoRepository.findByFechaHoraBetween(inicio,fin);
+    }
+
+    @Override
+    public  List<Turno> buscarTurnoDisponibles(Long especialidadId) {
+        return turnoRepository.findByProfesionalEspecialidadIdOrderByFechaHoraAsc(
+                especialidadId,
+                EstadoTurno.DISPONIBLE,
+                LocalDateTime.now()
+        );
+    }
+
+    @Override
+    public List<Turno> buscarPorEspecialidad(Long especialidadId){
+        if(!especialidadRepository.existsById(especialidadId)){
+            throw new EspecialidadNoEncontradaException("Especialidad no encontrada");
+        }
+
+        return turnoRepository.findByProfesionalEspecialidadId(especialidadId);
     }
 
     @Override

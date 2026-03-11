@@ -2,8 +2,6 @@ package com.gonzalo.turnos.entity;
 
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
