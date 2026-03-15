@@ -2,5 +2,6 @@ package com.gonzalo.turnos.entity;
 
 public enum Role {
     CLIENTE,
-    ADMIN
+    ADMIN,
+    PROFESIONAL
 }
